@@ -1,13 +1,15 @@
 //SERVIDOR
-const express = require('express');
+var express = require('express');
 var app = require('express')();
-
+var path = require('path');
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-
+// view engine setup
 app.set('view engine', 'ejs');
+//path.join() concatena los directorios
+app.set('views', path.join(__dirname, 'views'));
 
 //para capturar los datos del formulario
 app.use(express.urlencoded({extended:false}));
@@ -15,17 +17,20 @@ app.use(express.urlencoded({extended:false}));
 app.set('port', process.env.PORT || 3000);
 server.listen(app.get('port'), () => console.log('http://localhost:3000'));
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
+
+//__dirname path completa
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public');
+  res.render('index');
 });
 
 //rutas
-app.post('/Sockets_Chat/views/usu',(req,res)=>{
+app.post('/usu',(req,res)=>{
   let usuario = req.body.Usuario
   console.log("usuario: ",usuario);
-  res.render('/Sockets_Chat/views/chat',{usuario:usuario});  
+  res.render('chat',{usuario:usuario});  
 });
 
 io.on('connection',(socket)=>{
