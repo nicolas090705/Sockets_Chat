@@ -22,10 +22,10 @@ app.get('/', function (req, res) {
 });
 
 //rutas
-app.post('/usu',(req,res)=>{
+app.post('/Sockets_Chat/views/usu',(req,res)=>{
   let usuario = req.body.Usuario
   console.log("usuario: ",usuario);
-  res.render('chat',{usuario:usuario});  
+  res.render('/Sockets_Chat/views/chat',{usuario:usuario});  
 });
 
 io.on('connection',(socket)=>{
